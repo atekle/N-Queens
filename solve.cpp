@@ -13,7 +13,7 @@ using namespace std;
 int main(void) {
     int s[N], d[2*N-1], a[2*N-1], r, p;
 
-    srand(3075);
+    srand(time(NULL));
 
     for (int i = 0; i < N; i++)
         s[i] = i;
