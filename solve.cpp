@@ -4,6 +4,7 @@
 
 void shuffle(int *s, int n);
 void output(int *s, int n);
+int score(int *s, int *d, int *a, int n);
 void swap(int *s, int a, int b);
 void display(int *s, int n);
 
@@ -16,20 +17,10 @@ int main(void) {
 
     for (int i = 0; i < N; i++)
         s[i] = i;
+
     shuffle(s, N);
 
-    for (int i = 0; i < 2*N-1; i++) {
-        d[i] = 0;
-        a[i] = 0;
-    }
-    for (int i = 0; i < N; i++) {
-        d[i+s[i]]++;
-        a[i-s[i]+N-1]++;
-    }
-
-    p = 0;
-    for (int i = 0; i < 2*N-1; i++)
-        p += (d[i] > 0 ? d[i]-1 : 0) + (a[i] > 0 ? a[i]-1 : 0);
+    p = score(s, d, a, N);
 
     for (r = 0; p > 0; r++) {
         int u, v, z, b, q[N], w[N];
@@ -95,18 +86,7 @@ int main(void) {
     if (N < 70)
         display(s, N);
 
-    for (int i = 0; i < 2*N-1; i++) {
-        d[i] = 0;
-        a[i] = 0;
-    }
-    for (int i = 0; i < N; i++) {
-        d[i+s[i]]++;
-        a[i-s[i]+N-1]++;
-    }
-
-    p = 0;
-    for (int i = 0; i < 2*N-1; i++)
-        p += (d[i] > 0 ? d[i]-1 : 0) + (a[i] > 0 ? a[i]-1 : 0);
+    p = score(s, d, a, N);
 
     cout << (p == 0 ? "Valid" : "Invalid") << endl;
 
@@ -116,6 +96,25 @@ int main(void) {
 void shuffle(int *s, int n) {
     for (int i = n-1; i > 0; i--)
         swap(s, i, rand() % (i+1));
+}
+
+int score(int *s, int *d, int *a, int n) {
+    int p = 0;
+
+    for (int i = 0; i < 2*n-1; i++) {
+        d[i] = 0;
+        a[i] = 0;
+    }
+
+    for (int i = 0; i < N; i++) {
+        d[i+s[i]]++;
+        a[i-s[i]+n-1]++;
+    }
+
+    for (int i = 0; i < 2*n-1; i++)
+        p += (d[i] > 0 ? d[i]-1 : 0) + (a[i] > 0 ? a[i]-1 : 0);
+
+    return p; 
 }
 
 void output(int *s, int n) {
